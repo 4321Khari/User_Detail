@@ -41,19 +41,21 @@ export default class User {
     async addData(req, res) {
         const { name, phone, email, hobbies } = req.body
         const { id } = req.params
+        console.log(id);
         try {
-
-            const objectId = mongoose.Types.ObjectId.isValid(id) ? mongoose.Types.ObjectId(id) : null;
-            if (objectId) {
-                const existingData = await UserModel.findOne({ _id: objectId });
+           
+            if (mongoose.Types.ObjectId.isValid(id)) {
+                const existingData = await UserModel.findOne({ _id: id });
+    
                 if (existingData) {
                     // Update the existing data
-                    await UserModel.findByIdAndUpdate(objectId, { name, phone, email, hobbies });
+                    await UserModel.findByIdAndUpdate(id, { name, phone, email, hobbies });
                     res.json({ message: 'Data updated successfully!' });
                 } else {
                     res.status(404).json({ message: 'Data not found!' });
                 }
             }
+        
 
             else {
 
